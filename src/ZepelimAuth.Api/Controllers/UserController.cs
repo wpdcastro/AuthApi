@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using ZAuth.Business.Interface;
 using ZepelimAuth.Business.Models;
 using ZepelimAuth.Controllers.Utils;
+using ZepelimADM.Connections;
 
 namespace ZepelimAuth.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("save")]
+        [Route("Save")]
         public IActionResult Save([FromBody] User user)
         {
             try
@@ -37,7 +38,7 @@ namespace ZepelimAuth.Api.Controllers
                     });
                 }
 
-                if (user.Documento == null || user.Documento.Length != 14)
+                if (user.DocumentoUsuario == null)
                 {
                     return BadRequest(new
                     {
@@ -48,67 +49,28 @@ namespace ZepelimAuth.Api.Controllers
                     });
                 }
 
-                user.Role = "FAN";
+                user.Role         = "ADMIN";
                 user.DataCadastro = DateTime.UtcNow;
 
-                var resOld = _userRepository.CheckIsUnique(user.Documento, user.Email);
+                var connector = new ZepelimADMConnector();
+                var empresa = connector.CriarEmpresa(user);
+                if (empresa == null) throw new Exception("Erro ao salvar empresa");
 
-                if (user.Id > 0)
-                {
-                    resOld = _userRepository.FindById(user.Id);
+                // connector.AtrelarEmpresaProduto(empresa.id, 8);
+                // connector.AtrelarEmpresaProduto(empresa.id, 9);
 
-                    if (resOld.Result == null)
-                    {
-                        return NotFound(new
-                        {
-                            code = 404,
-                            return_date = DateTime.Now,
-                            success = false,
-                            message = "Usuário não encontrado"
-                        });
-                    }
-
-                    User userOld = resOld.Result;
-
-                    userOld.Documento = user.Documento;
-                    userOld.Name = user.Name;
-                    userOld.Email = user.Email;
-                    userOld.Role = user.Role;
-
-                    if (user.Password.Trim().Length > 0)
-                    {
-                        userOld.Password = StringUtils.GerarHashMd5(user.Password);
-                    }
-
-                    var savedUser = _userRepository.Update(userOld);
-                }
-                else
-                {
-                    if (resOld.Result != null)
-                    {
-                        return BadRequest(new
-                        {
-                            code = 400,
-                            return_date = DateTime.Now,
-                            success = false,
-                            message = "Cpf/E-mail já em uso"
-                        });
-                    }
-
-                    user.Password = StringUtils.GerarHashMd5(user.Password);
-                    var savedUser = _userRepository.Save(user);
-                }
-
-                user.Password = "";
-                user.Id = 0;
+                var usuario = connector.CriarUsuario(user);
+                if (usuario == null) throw new Exception("Erro ao salvar usuário");
+                connector.AtrelarEmpresaUsuario(empresa.id, usuario.id);
 
                 return Ok(new
                 {
-                    code = 200,
+                    code = 201,
                     success = true,
                     return_date = DateTime.Now,
-                    data = user
+                    data = new { }
                 });
+
             }
             catch (Exception e)
             {
@@ -123,98 +85,8 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("saveAdm")]
-        public IActionResult SaveAdm([FromBody] User user)
-        {
-            try
-            {
-                if (user == null)
-                {
-                    return NotFound(new
-                    {
-                        code = 404,
-                        return_date = DateTime.Now,
-                        success = false,
-                        message = "Usuário não encontrado"
-                    });
-                }
-
-                user.Role = "ADM";
-                user.DataCadastro = DateTime.UtcNow;
-
-                var resOld = _userRepository.CheckIsUnique(user.Documento, user.Email);
-
-                if (user.Id > 0)
-                {
-                    resOld = _userRepository.FindById(user.Id);
-
-                    if (resOld.Result == null)
-                    {
-                        return NotFound(new
-                        {
-                            code = 404,
-                            return_date = DateTime.Now,
-                            success = false,
-                            message = "Usuário não encontrado"
-                        });
-                    }
-
-                    User userOld = resOld.Result;
-
-                    userOld.Name = user.Name;
-                    userOld.Email = user.Email;
-                    userOld.Role = user.Role;
-
-                    if (user.Password.Trim().Length > 0)
-                    {
-                        userOld.Password = StringUtils.GerarHashMd5(user.Password);
-                    }
-
-                    var savedUser = _userRepository.Update(userOld);
-                }
-                else
-                {
-                    if (resOld.Result != null)
-                    {
-                        return BadRequest(new
-                        {
-                            code = 400,
-                            success = false,
-                            return_date = DateTime.Now,
-                            message = "Já existe uma conta com este E-mail/CPF"
-                        });
-                    }
-                        
-                    user.Password = StringUtils.GerarHashMd5(user.Password);
-                    var savedUser = _userRepository.Save(user);
-                }
-
-                user.Password = "";
-                user.Id = 0;
-
-                return Ok(new
-                {
-                    code = 200,
-                    success = true,
-                    return_date = DateTime.Now,
-                    data = user
-                });
-            }
-            catch (Exception e)
-            {
-                return BadRequest(new
-                {
-                    code = 400,
-                    success = false,
-                    return_date = DateTime.Now,
-                    message = e.Message
-                });
-            }
-        }
-
-        [HttpPost]
-        [Route("findById")]
-        [Authorize(Roles = "ADM,FAN")]
+        [Route("FindById")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult FindById([FromBody] User user)
         {
             try
@@ -266,9 +138,8 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("listAll")]
-        // [TokenAuthenticationFilter]
-        [Authorize(Roles = "ADM")]
+        [Route("ListAll")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult listAll()
         {
             try
@@ -309,7 +180,8 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("removeInRange")]
+        [Authorize(Roles = "ADMIN")]
+        [Route("RemoveInRange")]
         public IActionResult RemoveInRange([FromBody] List<int> userIds)
         {
             try
@@ -348,7 +220,8 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("remove")] 
+        [Authorize(Roles = "ADMIN")]
+        [Route("Remove")] 
         public IActionResult Remove([FromBody] OnlyIdViewModel toRemove)
         {
             try
@@ -389,9 +262,9 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("sendRecoveryEmail")]
-        [Authorize(Roles = "ADM,FAN")]
-        public IActionResult SendRecovertEmail([FromBody] User userData)
+        [Route("SendRecoveryEmail")]
+        [Authorize(Roles = "ADMIN")]
+        public IActionResult SendRecoveryEmail([FromBody] User userData)
         {
             if (userData == null)
             {

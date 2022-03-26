@@ -14,9 +14,11 @@ namespace ZAuth.Database.EntityConfig
 
             builder.HasIndex(p => p.Guid).IsUnique();
 
-            builder.Property(p => p.Name);
+            builder.Property(p => p.Nome);
             builder.Property(p => p.Email).IsRequired();
-            builder.Property(p => p.Documento).HasMaxLength(14);
+            builder.Property(p => p.DocumentoUsuario);
+            builder.Property(p => p.DocumentoEmpresa);
+            builder.Property(p => p.RazaoSocial);
             builder.Property(p => p.POS);
             builder.Property(p => p.HUB);
             builder.Property(p => p.LOG);

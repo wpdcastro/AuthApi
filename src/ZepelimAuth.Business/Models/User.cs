@@ -4,9 +4,11 @@ namespace ZepelimAuth.Business.Models
 {
     public class User : Entity
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public string Documento { get; set; }
+        public string Nome { get; set; }
+        public string Senha { get; set; }
+        public string DocumentoUsuario { get; set; }
+        public string RazaoSocial { get; set; }
+        public string DocumentoEmpresa { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
         public DateTime DataCadastro { get; set; }

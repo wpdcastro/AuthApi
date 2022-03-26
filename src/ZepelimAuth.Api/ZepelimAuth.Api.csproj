@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZepelimADM\ZepelimADM.csproj" />
     <ProjectReference Include="..\ZepelimAuth.Business\ZepelimAuth.Business.csproj" />
     <ProjectReference Include="..\ZepelimAuth.Data\ZepelimAuth.Data.csproj" />
   </ItemGroup>

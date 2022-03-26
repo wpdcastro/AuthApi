@@ -1,0 +1,15 @@
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.csproj.AssemblyReference.cache
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.AssemblyInfoInputs.cache
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.AssemblyInfo.cs
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.csproj.CoreCompileInputs.cache
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\bin\Release\net5.0\ZepelimADM.deps.json
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\bin\Release\net5.0\ZepelimADM.dll
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\bin\Release\net5.0\ZepelimADM.pdb
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\bin\Release\net5.0\ZepelimAuth.Business.dll
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\bin\Release\net5.0\ZepelimAuth.Business.pdb
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.csproj.CopyComplete
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.dll
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\refint\ZepelimADM.dll
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ZepelimADM.pdb
+C:\Users\willi\source\repos\AuthApi\src\ZepelimADM\obj\Release\net5.0\ref\ZepelimADM.dll

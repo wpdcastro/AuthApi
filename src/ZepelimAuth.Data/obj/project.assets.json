@@ -848,11 +848,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Data\\ZepelimAuth.Data.csproj",
+      "projectUniqueName": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Data\\ZepelimAuth.Data.csproj",
       "projectName": "ZepelimAuth.Data",
-      "projectPath": "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Data\\ZepelimAuth.Data.csproj",
+      "projectPath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Data\\ZepelimAuth.Data.csproj",
       "packagesPath": "C:\\Users\\willi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Data\\obj\\",
+      "outputPath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\willi\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -869,8 +869,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj": {
-              "projectPath": "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj"
+            "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj": {
+              "projectPath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj"
             }
           }
         }
@@ -915,7 +915,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

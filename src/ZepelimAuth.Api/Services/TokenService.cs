@@ -24,15 +24,71 @@ namespace FanPush.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Email), // User.Identity.Name
+                    new Claim(ClaimTypes.Name, user.Email),
                     new Claim(ClaimTypes.Role, user.Role),
-                    new Claim(type: "POS", value: user.POS.ToString().ToLower()),
-                    new Claim(type: "HUB", value: user.HUB.ToString().ToLower()),
-                    new Claim(type: "LOG", value: user.LOG.ToString().ToLower())
+                    new Claim(type: "isPOS", value: user.POS.ToString().ToLower()),
+                    new Claim(type: "isHUB", value: user.HUB.ToString().ToLower()),
+                    new Claim(type: "isLOG", value: user.LOG.ToString().ToLower())
                 }),
-                Expires = DateTime.Now.AddHours(4),
+                Expires = DateTime.Now.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
+            /*
+            foreach (var produto in user.Produtos)
+            {
+                tokenDescriptor.Subject.AddClaim(
+                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
+                );
+            }
+
+            foreach (var produto in user.EmpresasAtivas)
+            {
+                tokenDescriptor.Subject.AddClaim(
+                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
+                );
+            }
+            */
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+        public static string GenerateToken(UserADM user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(Settings.Secret);
+
+            if (user == null) throw new Exception("Usuário não encontrado");
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(type: "isPOS", value: user.POS.ToString().ToLower()),
+                    new Claim(type: "isHUB", value: user.HUB.ToString().ToLower()),
+                    new Claim(type: "isLOG", value: user.LOG.ToString().ToLower())
+                }),
+                Expires = DateTime.Now.AddHours(8),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            foreach (var produto in user.Produtos)
+            {
+                tokenDescriptor.Subject.AddClaim(
+                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
+                );
+            }
+
+            foreach (var produto in user.EmpresasAtivas)
+            {
+                /*
+                tokenDescriptor.Subject.AddClaim(
+                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
+                );
+                */
+            }
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
@@ -80,19 +136,15 @@ namespace FanPush.Services
 
             return principal;
         }
-        
         private static List<(string, string)> _refreshTokens = new();
-
         public static void SaveRefreshToken(string Email, string refreshToken)
         {
             _refreshTokens.Add(new(Email, refreshToken));
         }
-
         public static string GetRefreshToken(string Email)
         {
             return _refreshTokens.FirstOrDefault(x => x.Item1 == Email).Item2;
         }
-
         public static void DeleteRefreshToken(string Email, string refreshToken)
         {
             var item = _refreshTokens.FirstOrDefault(x => x.Item1 == Email && x.Item2 == refreshToken);

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0xg2TfVix/dEI8HVRbdsNomsJU2U9kZQUnp51uH0JfIkadN7tP8Kt4fsBd7TeVttayRIeXF5uiieO2wOfUupXQ==",
+  "dgSpecHash": "CaN6z86XUOzRxyX4IsCChANUb8od109vYqs2nA65GditvIKA/BsmPwlVv1OL0KsHBoaN8zEScvT9mEWMrfqmgg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\willi\\source\\repos\\ZepelimAuth\\src\\ZepelimAuth.Api\\ZepelimAuth.Api.csproj",
+  "projectFilePath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Api\\ZepelimAuth.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\willi\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\willi\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",

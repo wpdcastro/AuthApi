@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ZAuth.Business.Interface;
+using ZepelimADM.Connections;
 using ZepelimAuth.Business.Models;
 using ZepelimAuth.Controllers.Utils;
 
@@ -45,12 +47,68 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
+        public IActionResult Login([FromBody] User model)
+        {
+            try
+            {
+                var connector     = new ZepelimADMConnector();
+                var usuarioLogado = connector.Logar(model.Email, model.Senha);
+
+                if (usuarioLogado == null)
+                {
+                    return NotFound(new
+                    {
+                        code = 404,
+                        return_date = DateTime.Now,
+                        success = false,
+                        message = "Usuário ou senha inválidos"
+                    });
+                }
+                // usuarioLogado
+                var token = TokenService.GenerateToken(new User());
+                var refreshToken = TokenService.GenerateRefreshToken();
+
+                // Email
+                TokenService.SaveRefreshToken(usuarioLogado.id.ToString() , refreshToken);
+
+                connector.AlterarToken(usuarioLogado.id, token, refreshToken);
+
+                var res = new
+                {
+                    user = usuarioLogado,
+                    token = token,
+                    refreshToken = refreshToken
+                };
+
+                return Ok(new
+                {
+                    code = 400,
+                    return_date = DateTime.Now,
+                    success = false,
+                    data = res
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    code = 400,
+                    return_date = DateTime.Now,
+                    success = false,
+                    message = e.Message
+                });
+            }
+        }
+
+        /*
+        [HttpPost]
+        [Route("Login1")]
         public async Task<ActionResult<dynamic>> AuthenticateAsync([FromBody] User model)
         {
             try
             {
-                model.Password = StringUtils.GerarHashMd5(model.Password);
+                model.Senha = StringUtils.GerarHashMd5(model.Password);
 
                 var user = _userRepository.Get2(model.Email, model.Password);
 
@@ -65,17 +123,36 @@ namespace ZepelimAuth.Api.Controllers
                     });
                 }
 
-                var token = TokenService.GenerateToken(user.Result);
+                var connector     = new ZepelimADMConnector();
+                UserADM usuarioLogado = connector.Login(model.Email, model.Password);
+
+                if (usuarioLogado == null)
+                {
+                    return NotFound(new
+                    {
+                        code = 404,
+                        return_date = DateTime.Now,
+                        success = false,
+                        message = "Usuário ou senha inválidos"
+                    });
+                }
+
+                var produtosInvalidos = usuarioLogado.Produtos.Where(pr => pr.ConnectionString == null).ToList();
+
+                if (produtosInvalidos.Count() > 0) {
+                    connector.CriaBancos(usuarioLogado);
+                }
+
+                var token = TokenService.GenerateToken(usuarioLogado);
                 var refreshToken = TokenService.GenerateRefreshToken();
                 TokenService.SaveRefreshToken(user.Result.Email, refreshToken);
 
-                user.Result.Password = "";
-                user.Result.Documento = "";
+                usuarioLogado.Produtos = null;
 
                 return new
                 {
-                    user = user.Result,
-                    token = token,
+                    user         = usuarioLogado,
+                    token        = token,
                     refreshToken = refreshToken
                 };
             }
@@ -90,16 +167,17 @@ namespace ZepelimAuth.Api.Controllers
                 });
             }
         }
+        */
 
         [HttpPost]
-        [Route("validar")]
+        [Route("Validar")]
         public async Task<ActionResult<dynamic>> AuthenticateAsyncValid([FromBody] User model)
         {
             try
             {
-                model.Password = StringUtils.GerarHashMd5(model.Password);
+                model.Senha = StringUtils.GerarHashMd5(model.Senha);
 
-                var user = _userRepository.Get2(model.Email, model.Password);
+                var user = _userRepository.Get2(model.Email, model.Senha);
 
                 if (user.Result == null)
                 {
@@ -116,8 +194,8 @@ namespace ZepelimAuth.Api.Controllers
                 var refreshToken = TokenService.GenerateRefreshToken();
                 TokenService.SaveRefreshToken(user.Result.Email, refreshToken);
 
-                user.Result.Password = "";
-                user.Result.Documento = "";
+                user.Result.Senha = "";
+                user.Result.DocumentoUsuario = "";
 
                 return new
                 {
@@ -139,7 +217,7 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("refresh")]
+        [Route("Refresh")]
         public IActionResult Refresh(string token, string refreshToken)
         {
             var principal = TokenService.GetPrincipalFromExpiredToken(token);

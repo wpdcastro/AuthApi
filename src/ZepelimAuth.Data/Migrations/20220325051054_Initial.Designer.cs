@@ -9,7 +9,7 @@ using ZepelimAuth.Database;
 namespace ZepelimAuth.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220315200259_Initial")]
+    [Migration("20220325051054_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,9 +28,11 @@ namespace ZepelimAuth.Data.Migrations
                     b.Property<DateTime>("DataCadastro")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("Documento")
-                        .HasMaxLength(14)
-                        .HasColumnType("varchar(14)");
+                    b.Property<string>("DocumentoEmpresa")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DocumentoUsuario")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -45,13 +47,16 @@ namespace ZepelimAuth.Data.Migrations
                     b.Property<bool>("LOG")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Nome")
                         .HasColumnType("longtext");
 
                     b.Property<bool>("POS")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Password")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RazaoSocial")
                         .HasColumnType("longtext");
 
                     b.Property<bool>("Removido")

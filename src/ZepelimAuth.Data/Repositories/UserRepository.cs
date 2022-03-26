@@ -42,7 +42,7 @@ namespace Data.Repositories
 
             if (Cpf.Length > 0)
             {
-                query = query.Where(usr => usr.Documento == Cpf);
+                query = query.Where(usr => usr.DocumentoUsuario == Cpf);
             }
 
             return await query.FirstOrDefaultAsync();
