@@ -7,13 +7,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using ZepelimADM.Models;
 using ZepelimAuth.Business.Models;
 
 namespace FanPush.Services
 {
     public static class TokenService
     {
-        public static string GenerateToken(User user)
+        public static string GenerateToken(UserLoginADM user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             byte[] key = Encoding.ASCII.GetBytes(Settings.Secret);
@@ -24,35 +25,27 @@ namespace FanPush.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role),
-                    new Claim(type: "isPOS", value: user.POS.ToString().ToLower()),
-                    new Claim(type: "isHUB", value: user.HUB.ToString().ToLower()),
-                    new Claim(type: "isLOG", value: user.LOG.ToString().ToLower())
+                    new Claim(ClaimTypes.Name, user.email),
+                    new Claim(ClaimTypes.Role, user.role)
+                    // new Claim(type: "isPOS", value: user.POS.ToString().ToLower()),
+                    // new Claim(type: "isHUB", value: user.HUB.ToString().ToLower()),
+                    //new Claim(type: "isLOG", value: user.LOG.ToString().ToLower())
                 }),
                 Expires = DateTime.Now.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
-            /*
-            foreach (var produto in user.Produtos)
-            {
+            foreach (ProductoADM produto in user.produtos)
+            { 
                 tokenDescriptor.Subject.AddClaim(
-                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
+                    new Claim(type: produto.descricao.ToUpper(), value: produto.connectionString ??= "")
                 );
             }
-
-            foreach (var produto in user.EmpresasAtivas)
-            {
-                tokenDescriptor.Subject.AddClaim(
-                    new Claim(type: produto.Descricao.ToUpper(), value: produto.ConnectionString)
-                );
-            }
-            */
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
         public static string GenerateToken(UserADM user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

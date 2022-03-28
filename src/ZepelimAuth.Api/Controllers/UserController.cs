@@ -7,6 +7,7 @@ using ZAuth.Business.Interface;
 using ZepelimAuth.Business.Models;
 using ZepelimAuth.Controllers.Utils;
 using ZepelimADM.Connections;
+using ZepelimAuth.Api.ViewModels;
 
 namespace ZepelimAuth.Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Save")]
+        [Route("salvar")]
         public IActionResult Save([FromBody] User user)
         {
             try
@@ -53,7 +54,7 @@ namespace ZepelimAuth.Api.Controllers
                 user.DataCadastro = DateTime.UtcNow;
 
                 var connector = new ZepelimADMConnector();
-                var empresa = connector.CriarEmpresa(user);
+                var empresa = connector.CriarEmpresa(user.Id);
                 if (empresa == null) throw new Exception("Erro ao salvar empresa");
 
                 // connector.AtrelarEmpresaProduto(empresa.id, 8);
@@ -62,6 +63,60 @@ namespace ZepelimAuth.Api.Controllers
                 var usuario = connector.CriarUsuario(user);
                 if (usuario == null) throw new Exception("Erro ao salvar usuário");
                 connector.AtrelarEmpresaUsuario(empresa.id, usuario.id);
+
+                return Ok(new
+                {
+                    code = 201,
+                    success = true,
+                    return_date = DateTime.Now,
+                    data = new { }
+                });
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new
+                {
+                    code = 400,
+                    success = false,
+                    return_date = DateTime.Now,
+                    message = e.Message
+                });
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("criarBancos")]
+        public IActionResult CriarBancos([FromBody] UserTokenViewModel user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    return NotFound(new
+                    {
+                        code = 404,
+                        return_date = DateTime.Now,
+                        success = false,
+                        message = "Usuário não encontrado"
+                    });
+                }
+
+                if (user.Id == 0 || !string.IsNullOrEmpty(user.AccessToken))
+                {
+                    return BadRequest(new
+                    {
+                        code = 400,
+                        return_date = DateTime.Now,
+                        success = false,
+                        message = "Usuário não encontrado"
+                    });
+                }
+
+                var connector = new ZepelimADMConnector();
+                var empresa = connector.CriarEmpresa(user.Id);
+                if (empresa == null) throw new Exception("Erro ao criar ambiente");
 
                 return Ok(new
                 {

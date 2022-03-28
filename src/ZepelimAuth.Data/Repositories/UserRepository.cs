@@ -25,7 +25,7 @@ namespace Data.Repositories
         {
             return await DbSet
                 .AsNoTracking()
-                .FirstOrDefaultAsync(usr => usr.Email == Email && usr.Password == Password);
+                .FirstOrDefaultAsync(usr => usr.Email == Email && usr.Senha == Password);
 
             /*
             return users

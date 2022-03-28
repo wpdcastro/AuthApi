@@ -58,12 +58,126 @@ namespace ZepelimADM.Connections
 
         public ObjectADM AlterarToken(int userId, string token, string refreshToken)
         {
-            throw new Exception("TO DO");
+            try
+            { 
+                string link = _link + "login/alterarToken";
+                var request = HttpWebRequest.Create(@"" + link);
+                request.ContentType = "application/json";
+                request.Method = "POST";
+
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = "{\"UserId\":\"" + userId + "\", \"AccessToken\":\"" + token + "\", \"RefreshToken\":\"" + refreshToken + "\"}";
+
+                    streamWriter.Write(json);
+                }
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        var res = response.GetResponseStream();
+                        throw new Exception("Erro ao conectar com o Zepelim!");
+                    };
+
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var content = reader.ReadToEnd();
+
+                        if (string.IsNullOrWhiteSpace(content))
+                        {
+                            throw new Exception("Erro ao conectar com o Ideris!");
+                        }
+                        else
+                        {
+                            var retorno = JsonSerializer.Deserialize<EmpresaReturn>(content);
+                            return retorno.data;
+                        }
+                    }
+                }
+            }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        string text = reader.ReadToEnd();
+                        throw new Exception(text);
+                    }
+                }
+
+                throw new Exception("Erro ao tentar acessar API", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao tentar acessar API", ex);
+            }
         }
 
-        public ObjectADM Logar(string Login, string Senha)
+        public UserLoginADM Logar(string Login, string Senha)
         {
-            return new ObjectADM();
+            try
+            {
+                string link = _link + "login/logar";
+                var request = HttpWebRequest.Create(@"" + link);
+                request.ContentType = "application/json";
+                request.Method = "POST";
+
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = "{\"Email\":\"" + Login + "\", \"Senha\":\"" + Senha + "\"}";
+
+                    streamWriter.Write(json);
+                }
+
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        var res = response.GetResponseStream();
+                        throw new Exception("Erro ao conectar com o Zepelim!");
+                    };
+
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var content = reader.ReadToEnd();
+
+                        if (string.IsNullOrWhiteSpace(content))
+                        {
+                            throw new Exception("Erro ao conectar com o Ideris!");
+                        }
+                        else
+                        {
+                            var userLogado = JsonSerializer.Deserialize<LoginReturn>(content);
+                            return userLogado.data;
+                        }
+                    }
+                }
+            }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        string text = reader.ReadToEnd();
+                        throw new Exception(text);
+                    }
+                }
+
+                throw new Exception("Erro ao tentar acessar API", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao tentar acessar API", ex);
+            }
         }
 
         public ObjectADM CriarUsuario(User user)
@@ -173,20 +287,18 @@ namespace ZepelimADM.Connections
             }
         }
 
-        public ObjectADM CriarEmpresa(User user)
+        public ObjectADM CriarEmpresa(int userId)
         {
             try
             {
-                string link         = _link + "empresa/save";
+                string link         = _link + "user/criaBancos";
                 var request         = HttpWebRequest.Create(@"" + link);
                 request.ContentType = "application/json";
                 request.Method      = "POST";
-                // request.PreAuthenticate = true;
-                // request.Headers.Add("Authorization", _loggedUser);
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
-                    string json = "{\"Descricao\":\"" + user.RazaoSocial + "\", \"Documento\":\"" + user.DocumentoEmpresa + "\"}";
+                    string json = "{\"UserId\":\"" + userId + "\"}";
                     streamWriter.Write(json);
                 }
 
@@ -204,13 +316,15 @@ namespace ZepelimADM.Connections
 
                 if (string.IsNullOrWhiteSpace(content))
                 {
-                    throw new Exception("Erro ao conectar com o Ideris!");
+                    throw new Exception("Erro ao conectar com o Zepelim!");
                 }
                 else
                 {
                     var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(content);
 
-                    if (empresaSalva.message != null && empresaSalva.message.Length > 0) throw new Exception(empresaSalva.message);
+                    if (empresaSalva.message != null && empresaSalva.message.Length > 0) 
+                        throw new Exception(empresaSalva.message);
+
                     return empresaSalva.data;
                 }
             }

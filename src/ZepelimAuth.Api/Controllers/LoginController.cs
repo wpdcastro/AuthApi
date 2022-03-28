@@ -47,8 +47,8 @@ namespace ZepelimAuth.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Login")]
-        public IActionResult Login([FromBody] User model)
+        [Route("logar")]
+        public IActionResult Logar([FromBody] User model)
         {
             try
             {
@@ -65,8 +65,9 @@ namespace ZepelimAuth.Api.Controllers
                         message = "Usuário ou senha inválidos"
                     });
                 }
+                
                 // usuarioLogado
-                var token = TokenService.GenerateToken(new User());
+                var token = TokenService.GenerateToken(usuarioLogado);
                 var refreshToken = TokenService.GenerateRefreshToken();
 
                 // Email
@@ -83,7 +84,7 @@ namespace ZepelimAuth.Api.Controllers
 
                 return Ok(new
                 {
-                    code = 400,
+                    code = 200,
                     return_date = DateTime.Now,
                     success = false,
                     data = res
@@ -177,9 +178,10 @@ namespace ZepelimAuth.Api.Controllers
             {
                 model.Senha = StringUtils.GerarHashMd5(model.Senha);
 
-                var user = _userRepository.Get2(model.Email, model.Senha);
+                var connector = new ZepelimADMConnector();
+                var user = connector.Logar(model.Email, model.Senha);
 
-                if (user.Result == null)
+                if (user == null)
                 {
                     return NotFound(new
                     {
@@ -190,16 +192,13 @@ namespace ZepelimAuth.Api.Controllers
                     });
                 }
 
-                var token = TokenService.GenerateToken(user.Result);
+                var token = TokenService.GenerateToken(user);
                 var refreshToken = TokenService.GenerateRefreshToken();
-                TokenService.SaveRefreshToken(user.Result.Email, refreshToken);
-
-                user.Result.Senha = "";
-                user.Result.DocumentoUsuario = "";
+                TokenService.SaveRefreshToken(user.email, refreshToken);
 
                 return new
                 {
-                    user = user.Result,
+                    user = user,
                     token = token,
                     refreshToken = refreshToken
                 };
