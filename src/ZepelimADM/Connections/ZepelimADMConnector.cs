@@ -287,23 +287,25 @@ namespace ZepelimADM.Connections
             }
         }
 
-        public ObjectADM CriarEmpresa(int userId)
+        public ObjectADM CriarEmpresa(User user)
         {
             try
             {
-                string link         = _link + "user/criaBancos";
-                var request         = HttpWebRequest.Create(@"" + link);
+                string link = _link + "empresa/save";
+                var request = HttpWebRequest.Create(@"" + link);
                 request.ContentType = "application/json";
-                request.Method      = "POST";
+                request.Method = "POST";
+                // request.PreAuthenticate = true;
+                // request.Headers.Add("Authorization", _loggedUser);
 
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
-                    string json = "{\"UserId\":\"" + userId + "\"}";
+                    string json = "{\"Descricao\":\"" + user.RazaoSocial + "\", \"Documento\":\"" + user.DocumentoEmpresa + "\"}";
                     streamWriter.Write(json);
                 }
 
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-                
+
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
                     var res = response.GetResponseStream();
@@ -311,20 +313,18 @@ namespace ZepelimADM.Connections
                 };
 
                 StreamReader reader = new StreamReader(response.GetResponseStream());
-                    
+
                 var content = reader.ReadToEnd();
 
                 if (string.IsNullOrWhiteSpace(content))
                 {
-                    throw new Exception("Erro ao conectar com o Zepelim!");
+                    throw new Exception("Erro ao conectar com o Ideris!");
                 }
                 else
                 {
                     var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(content);
 
-                    if (empresaSalva.message != null && empresaSalva.message.Length > 0) 
-                        throw new Exception(empresaSalva.message);
-
+                    if (empresaSalva.message != null && empresaSalva.message.Length > 0) throw new Exception(empresaSalva.message);
                     return empresaSalva.data;
                 }
             }

@@ -54,7 +54,7 @@ namespace ZepelimAuth.Api.Controllers
                 user.DataCadastro = DateTime.UtcNow;
 
                 var connector = new ZepelimADMConnector();
-                var empresa = connector.CriarEmpresa(user.Id);
+                var empresa = connector.CriarEmpresa(user);
                 if (empresa == null) throw new Exception("Erro ao salvar empresa");
 
                 // connector.AtrelarEmpresaProduto(empresa.id, 8);
@@ -115,8 +115,8 @@ namespace ZepelimAuth.Api.Controllers
                 }
 
                 var connector = new ZepelimADMConnector();
-                var empresa = connector.CriarEmpresa(user.Id);
-                if (empresa == null) throw new Exception("Erro ao criar ambiente");
+                //var empresa = connector.CriarBancos(user);
+                // if (empresa == null) throw new Exception("Erro ao criar ambiente");
 
                 return Ok(new
                 {
