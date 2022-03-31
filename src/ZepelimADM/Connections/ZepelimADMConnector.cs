@@ -10,7 +10,11 @@ namespace ZepelimADM.Connections
 {
     public class ZepelimADMConnector
     {
+<<<<<<< HEAD
         protected string _link = "http://localhost:44341/api/v1/";
+=======
+        protected string _link = "https://localhost:44351/api/v1/"; //"http://localhost:8090/api/v1/";
+>>>>>>> c207690a6dde6704cc0477e35ceb50bccbb420d3
         protected string _loggedUser = "";
         public ZepelimADMConnector()
         {
@@ -101,12 +105,12 @@ namespace ZepelimADM.Connections
                 using (WebResponse response = e.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
                     }
                 }
 
@@ -163,12 +167,12 @@ namespace ZepelimADM.Connections
                 using (WebResponse response = e.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
                     }
                 }
 
@@ -228,12 +232,12 @@ namespace ZepelimADM.Connections
                 using (WebResponse response = e.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
                     }
                 }
 
@@ -281,6 +285,22 @@ namespace ZepelimADM.Connections
                     }
                 }
             }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        string text = reader.ReadToEnd();
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
+                    }
+                }
+
+                throw new Exception("Erro ao tentar acessar API", e);
+            }
             catch (Exception ex)
             {
                 throw new Exception("Erro ao tentar acessar API", ex);
@@ -291,7 +311,7 @@ namespace ZepelimADM.Connections
         {
             try
             {
-                string link = _link + "empresa/save";
+                string link = _link + "empresa/salvar";
                 var request = HttpWebRequest.Create(@"" + link);
                 request.ContentType = "application/json";
                 request.Method = "POST";
@@ -325,6 +345,7 @@ namespace ZepelimADM.Connections
                     var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(content);
 
                     if (empresaSalva.message != null && empresaSalva.message.Length > 0) throw new Exception(empresaSalva.message);
+
                     return empresaSalva.data;
                 }
             }
@@ -333,12 +354,12 @@ namespace ZepelimADM.Connections
                 using (WebResponse response = e.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
                     }
                 }
 
@@ -354,7 +375,7 @@ namespace ZepelimADM.Connections
         {
             try
             {
-                string link = _link + "empresa/saveempprd";
+                string link = _link + "empresa/salvarEmpresaProduto";
 
                 var request = HttpWebRequest.Create(@"" + link);
                 request.ContentType = "application/json";
@@ -398,12 +419,12 @@ namespace ZepelimADM.Connections
                 using (WebResponse response = e.Response)
                 {
                     HttpWebResponse httpResponse = (HttpWebResponse)response;
-                    Console.WriteLine("Error code: {0}", httpResponse.StatusCode);
                     using (Stream data = response.GetResponseStream())
                     using (var reader = new StreamReader(data))
                     {
                         string text = reader.ReadToEnd();
-                        throw new Exception(text);
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
                     }
                 }
 
@@ -457,15 +478,89 @@ namespace ZepelimADM.Connections
 
                 return null;
             }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        string text = reader.ReadToEnd();
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
+                    }
+                }
+
+                throw new Exception("Erro ao tentar acessar API", e);
+            }
             catch (Exception e)
             {
                 throw new Exception(e.Message, e);
             }
         }
         
-        public void CriaBancos(UserADM usuarioLogado)
+        public ObjectADM CriarBancos(int userId, string accessToken)
         {
+            try
+            {
+                string link = _link + "user/criarBancos";
+                var request = HttpWebRequest.Create(@"" + link);
+                request.ContentType = "application/json";
+                request.Method = "POST";
+                // request.PreAuthenticate = true;
+                // request.Headers.Add("Authorization", _loggedUser);
 
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = "{\"Id\":\"" + userId + "\", \"AccessToken\":\"" + accessToken + "\"}";
+                    streamWriter.Write(json);
+                }
+
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    var res = response.GetResponseStream();
+                    throw new Exception("Erro ao conectar com o Zepelim!");
+                };
+
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                var content = reader.ReadToEnd();
+
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    throw new Exception("Erro ao conectar com o Ideris!");
+                }
+                else
+                {
+                    var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(content);
+
+                    if (empresaSalva.message != null && empresaSalva.message.Length > 0) throw new Exception(empresaSalva.message);
+                    return empresaSalva.data;
+                }
+            }
+            catch (WebException e)
+            {
+                using (WebResponse response = e.Response)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)response;
+                    using (Stream data = response.GetResponseStream())
+                    using (var reader = new StreamReader(data))
+                    {
+                        string text = reader.ReadToEnd();
+                        var empresaSalva = JsonSerializer.Deserialize<EmpresaReturn>(text);
+                        throw new Exception(empresaSalva.message);
+                    }
+                }
+
+                throw new Exception("Erro ao tentar acessar API", e);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao tentar acessar API", ex);
+            };
         }
     }
 }
