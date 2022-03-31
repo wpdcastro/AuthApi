@@ -48,7 +48,7 @@ namespace ZepelimAuth.Api
             services.AddControllersWithViews();
 
             // Repositories
-            services.AddTransient<IUserRepository,     UserRepository>();
+            services.AddTransient<IUserRepository,UserRepository>();
 
             services.AddMvc();
 
