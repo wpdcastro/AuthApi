@@ -57,9 +57,6 @@ namespace ZepelimAuth.Api.Controllers
                 var empresa = connector.CriarEmpresa(user);
                 if (empresa == null) throw new Exception("Erro ao salvar empresa");
 
-                // connector.AtrelarEmpresaProduto(empresa.id, 8);
-                // connector.AtrelarEmpresaProduto(empresa.id, 9);
-
                 var usuario = connector.CriarUsuario(user);
                 if (usuario == null) throw new Exception("Erro ao salvar usuário");
                 connector.AtrelarEmpresaUsuario(empresa.id, usuario.id);
@@ -68,7 +65,7 @@ namespace ZepelimAuth.Api.Controllers
                 {
                     code = 201,
                     success = true,
-                    return_date = DateTime.Now,
+                    return_date = DateTime.UtcNow,
                     data = new { }
                 });
 
@@ -103,7 +100,7 @@ namespace ZepelimAuth.Api.Controllers
                     });
                 }
 
-                if (user.Id == 0 || !string.IsNullOrEmpty(user.AccessToken))
+                if (user.Id == 0 || string.IsNullOrEmpty(user.AccessToken))
                 {
                     return BadRequest(new
                     {
@@ -115,14 +112,13 @@ namespace ZepelimAuth.Api.Controllers
                 }
 
                 var connector = new ZepelimADMConnector();
-                //var empresa = connector.CriarBancos(user);
-                // if (empresa == null) throw new Exception("Erro ao criar ambiente");
+                connector.CriarBancos(user.Id, user.AccessToken);
 
                 return Ok(new
                 {
                     code = 201,
                     success = true,
-                    return_date = DateTime.Now,
+                    return_date = DateTime.UtcNow,
                     data = new { }
                 });
 
