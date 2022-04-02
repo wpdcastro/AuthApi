@@ -10,7 +10,7 @@ namespace ZepelimADM.Connections
 {
     public class ZepelimADMConnector
     {
-        protected string _link = "https://localhost:44351/api/v1/"; //"http://localhost:8090/api/v1/";
+        protected string _link = "http://localhost:8090/api/v1/"; // "https://apiadm.zeplog.com.br"; //https://apiadm.zeplog.com.br //"http://localhost:8090/api/v1/";
         protected string _loggedUser = "";
         public ZepelimADMConnector()
         {

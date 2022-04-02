@@ -60,7 +60,7 @@ namespace ZepelimAuth.Api.Controllers
                     return NotFound(new
                     {
                         code = 404,
-                        return_date = DateTime.Now,
+                        return_date = DateTime.UtcNow,
                         success = false,
                         message = "Usuário ou senha inválidos"
                     });
@@ -86,7 +86,7 @@ namespace ZepelimAuth.Api.Controllers
                 {
                     code = 200,
                     return_date = DateTime.Now,
-                    success = false,
+                    success = true,
                     data = res
                 });
             }
@@ -100,6 +100,13 @@ namespace ZepelimAuth.Api.Controllers
                     message = e.Message
                 });
             }
+        }
+
+        [HttpGet]
+        [Route("status")]
+        public IActionResult Status()
+        {
+            return Ok("Api de ATUH online");
         }
 
         /*
