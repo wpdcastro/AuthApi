@@ -22,3 +22,14 @@ C:\Users\willi\source\repos\AuthApi\src\ZepelimAuth.Business\obj\Release\net5.0\
 C:\Users\willi\source\repos\AuthApi\src\ZepelimAuth.Business\obj\Release\net5.0\refint\ZepelimAuth.Business.dll
 C:\Users\willi\source\repos\AuthApi\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.pdb
 C:\Users\willi\source\repos\AuthApi\src\ZepelimAuth.Business\obj\Release\net5.0\ref\ZepelimAuth.Business.dll
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\bin\Release\net5.0\ZepelimAuth.Business.deps.json
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\bin\Release\net5.0\ZepelimAuth.Business.dll
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\bin\Release\net5.0\ref\ZepelimAuth.Business.dll
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\bin\Release\net5.0\ZepelimAuth.Business.pdb
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.AssemblyInfoInputs.cache
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.AssemblyInfo.cs
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.csproj.CoreCompileInputs.cache
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.dll
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ref\ZepelimAuth.Business.dll
+C:\Zepelim\Auth4\src\ZepelimAuth.Business\obj\Release\net5.0\ZepelimAuth.Business.pdb
