@@ -18,6 +18,8 @@ namespace ZepelimADM.Models
         public Guid guid { get; set; }
         public string nome { get; set; }
         public string email { get; set; }
+        public int? usuarioLogId { get; set; }
+        public int? empresaAtivaId { get; set; }
         public string role { get; set; }
         public string documento { get; set; }
         public virtual List<EmpresaAtivaADM> empresasAtivas { get; set; }

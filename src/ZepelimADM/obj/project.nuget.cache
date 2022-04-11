@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Szfnf91MUjLAII1gKfLdZP/ShuW/PvTmgWkgM+gu274axKORgtNFIQBHIbVaoUCkXzwLbUvmh8Cp1qAgWDgUWQ==",
+  "dgSpecHash": "oxQodVXsojqrtOzLo7I5P3/8zUlMC3W5rwzkvGwKEE12iZSit4UtIb42U4r4ZLovaopM4Usd4YM1kuiPRedLbQ==",
   "success": true,
-  "projectFilePath": "C:\\Zepelim\\Auth4\\src\\ZepelimADM\\ZepelimADM.csproj",
+  "projectFilePath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimADM\\ZepelimADM.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -27,18 +27,17 @@ namespace FanPush.Services
                 {
                     new Claim(ClaimTypes.Name, user.email),
                     new Claim(ClaimTypes.Role, user.role)
-                    // new Claim(type: "isPOS", value: user.POS.ToString().ToLower()),
-                    // new Claim(type: "isHUB", value: user.HUB.ToString().ToLower()),
-                    //new Claim(type: "isLOG", value: user.LOG.ToString().ToLower())
                 }),
                 Expires = DateTime.Now.AddHours(8),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
+            tokenDescriptor.Subject.AddClaim(new Claim(type: "UsuarioId", value: user.id.ToString()));
+
             foreach (ProductoADM produto in user.produtos)
-            { 
+            {
                 tokenDescriptor.Subject.AddClaim(
-                    new Claim(type: produto.descricao.ToUpper(), value: produto.connectionString ??= "")
+                    new Claim(type: produto.descricao.ToUpper(), value: (produto.connectionString.Length > 0) ? "true" : "false")
                 );
             }
 

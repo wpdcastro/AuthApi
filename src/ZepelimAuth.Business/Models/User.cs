@@ -14,6 +14,7 @@ namespace ZepelimAuth.Business.Models
         public string CodigoArea { get; set; }
         public string DDD { get; set; }
         public string Telefone { get; set; }
+        public int? UsuarioLogId { get; set; }
         public DateTime DataCadastro { get; set; }
         public bool POS { get; set; }
         public bool HUB { get; set; }

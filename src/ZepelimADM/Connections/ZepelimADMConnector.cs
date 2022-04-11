@@ -10,15 +10,8 @@ namespace ZepelimADM.Connections
 {
     public class ZepelimADMConnector
     {
-<<<<<<< HEAD
-        protected string _link = "http://localhost:8090/api/v1/"; // "https://apiadm.zeplog.com.br"; //https://apiadm.zeplog.com.br //"http://localhost:8090/api/v1/";
-=======
-<<<<<<< HEAD
-        protected string _link = "http://localhost:44341/api/v1/";
-=======
-        protected string _link = "https://localhost:44351/api/v1/"; //"http://localhost:8090/api/v1/";
->>>>>>> c207690a6dde6704cc0477e35ceb50bccbb420d3
->>>>>>> 0e64c82fae8f390d0c12006b0075620ddc193d6a
+        // protected string _link = "http://localhost:8090/api/v1/";
+        protected string _link = "https://apiadm.zeplog.com.br/api/v1/";
         protected string _loggedUser = "";
         public ZepelimADMConnector()
         {
@@ -201,7 +194,7 @@ namespace ZepelimADM.Connections
                 using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                 {
                     string json = "{\"Nome\":\"" + user.Nome + "\", \"Documento\":\"" + user.DocumentoUsuario + "\",";
-                    json += "\"Email\":\"" + user.Email + "\", \"Role\": \"" + user.Role + "\", \"Senha\":\"" + user.Senha + "\"}";
+                    json += "\"Email\":\"" + user.Email + "\", \"UsuarioLogId\": \"" + user.UsuarioLogId + "\",\"Role\": \"" + user.Role + "\", \"Senha\":\"" + user.Senha + "\"}";
 
                     streamWriter.Write(json);
                 }

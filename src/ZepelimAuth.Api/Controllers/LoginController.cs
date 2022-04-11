@@ -1,4 +1,5 @@
 ﻿using FanPush.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ZAuth.Business.Interface;
 using ZepelimADM.Connections;
+using ZepelimAuth.Api.ViewModels;
 using ZepelimAuth.Business.Models;
 using ZepelimAuth.Controllers.Utils;
 

@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Cristiano\\.nuget\\packages\\": {}
+    "C:\\Users\\willi\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Zepelim\\Auth4\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj",
+      "projectUniqueName": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj",
       "projectName": "ZepelimAuth.Business",
-      "projectPath": "C:\\Zepelim\\Auth4\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj",
-      "packagesPath": "C:\\Users\\Cristiano\\.nuget\\packages\\",
-      "outputPath": "C:\\Zepelim\\Auth4\\src\\ZepelimAuth.Business\\obj\\",
+      "projectPath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Business\\ZepelimAuth.Business.csproj",
+      "packagesPath": "C:\\Users\\willi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\willi\\source\\repos\\AuthApi\\src\\ZepelimAuth.Business\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Cristiano\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\willi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   }
