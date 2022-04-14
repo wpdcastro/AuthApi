@@ -33,6 +33,7 @@ namespace FanPush.Services
             };
 
             tokenDescriptor.Subject.AddClaim(new Claim(type: "UsuarioId", value: user.id.ToString()));
+            tokenDescriptor.Subject.AddClaim(new Claim(type: "EmpresaAtiva", value: user.empresaAtivaId.ToString()));
 
             foreach (ProductoADM produto in user.produtos)
             {

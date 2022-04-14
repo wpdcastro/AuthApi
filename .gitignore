@@ -1,1 +1,3 @@
 .vs
+src/ZepelimAuth.Api/obj
+src/ZepelimAuth.Api/bin
